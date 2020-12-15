@@ -1,43 +1,33 @@
-# Inhale - Malware Inhaler
+# Continuation of [the original project](https://github.com/netspooky/inhale)
 
 Inhale is a malware analysis and classification tool that is capable of automating and scaling many static analysis operations.
 
 This is the beta release version, for testing purposes, feedback, and community development.
 
-### Background
+## Contents
+- [Install](#Install)
+- [Usage](#Usage)
+- [DataModel](#DataModel)
+- [Thanks](#Thanks)
 
-Inhale started as a series of small scripts that I used when collecting and analyzing a large amount of malware from diverse sources. 
-There are plenty of frameworks and tools for doing similar work, but none of them really matched my work flow of quickly finding, 
-classifying, and storing information about a large number of files. Some also require expensive API keys and other services that cost money. 
-
-I ended up turning these scripts into something that people can quickly set up and use, whether you run from a research server, a laptop, 
-or a low cost computer like a Raspberry Pi.
+----
 
 ## Install
 
 This tool is built to run on Linux using Python3, ElasticSearch, radare2, yara and binwalk. jq is also needed to pretty print output from the database. Here are some of the basic instructions to install.
 
-### Python3
-
-Install requirements
+### Requirements
 
     python3 -m pip install -r requirements.txt
 
-### Installing ElasticSearch (Debian)
+---
 
-[Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html)
+### ElasticSearch
+[Documentation](https://www.elastic.co/start)
 
-    wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
-    sudo apt-get install apt-transport-https
-    echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-7.x.list
-    sudo apt-get update && sudo apt-get install elasticsearch
-    sudo service elasticsearch start
+---
 
-You can also install manually by following [this documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/targz.html)
-
-Additionally you can [set up a full ELK stack](https://logz.io/learn/complete-guide-elk-stack/#installing-elk) for visualization and data analysis purposes. It is not necessary for using this tool.
-
-### Installing radare2
+### Radare2
 
 It's important to install radare2 from the [repo](https://github.com/radare/radare2), and not your package manager. Package manager versions don't come with all the bells and whistles required for inhale.
 
@@ -45,25 +35,20 @@ It's important to install radare2 from the [repo](https://github.com/radare/rada
     cd radare2
     sys/install.sh
 
-### Installing Yara
+---
+
+### Yara
 
 [Documentation](https://yara.readthedocs.io/en/v3.10.0/gettingstarted.html)
-
-    sudo apt-get install automake libtool make gcc
-    wget https://github.com/VirusTotal/yara/archive/v3.10.0.tar.gz
-    tar xvzf v3.10.0.tar.gz
-    cd yara-3.10.0/
-    ./bootstrap.sh
-    ./configure
-    make
-    sudo make install
 
 If you get any errors about shared objects, try this to fix it.
 
     sudo sh -c 'echo "/usr/local/lib" >> /etc/ld.so.conf'
     sudo ldconfig
 
-### Installing binwalk
+---
+
+### binwalk
 
 It's most likely best to simply install binwalk from the [repo](https://github.com/ReFirmLabs/binwalk). 
 
@@ -72,6 +57,8 @@ It's most likely best to simply install binwalk from the [repo](https://github.c
     sudo python3 setup.py install
 
 More information on installing additional features for binwalk is located [here](https://github.com/ReFirmLabs/binwalk/blob/master/INSTALL.md).
+
+---
 
 ## Usage 
 
@@ -112,7 +99,7 @@ Download everything in this remote directory, tag it all as "phishing":
 
 PROTIP: Use [this](https://twitter.com/search?q=%23opendir&f=live) Twitter hashtag search to find interesting open directories that possibly contain malware. Use at your own risk.
 
-### Yara
+## Yara
 
 You can pass your own yara rules with -y, this is a huge work in progress and almost everything in "YaraRules" is from https://github.com/kevthehermit/PasteHunter/tree/master/YaraRules. Shoutout [@KevTheHermit](https://twitter.com/kevthehermit)
 
@@ -122,7 +109,9 @@ Use db.sh to query (Soon to be a nice script)
 
     db.sh *something* | jq .
 
-## Data Model
+---
+
+## DataModel
 
 The following is the current data model used for the elasticsearch database. Not every one of these will be used for every given file. Any r2_* tags are typically reserved for binaries of some sort.
 
@@ -162,12 +151,9 @@ The following is the current data model used for the elasticsearch database. Not
 | tags        | Any user defined tags passed with the -t flag. |
 | url         | The origin url if a file was remotely downloaded |
 | urls        | Any URLs that have been pulled from the binary |
+---
 
-## Solutions to Issues
-
-There are some known issues with this project (mainly to do with versions from package managers), and here I will track anything that has a solution for it.
-
-### ElasticSearch index field limit
+## ElasticSearch index field limit
 
 If you get an error like this:
 
@@ -177,17 +163,7 @@ You may have an older version of elasticSearch. You can upgrade, or you can incr
 
     curl -XPUT 'localhost:9200/inhaled/_settings' -H 'Content-Type: application/json' -d'{ "index" : { "mapping" : { "total_fields" : { "limit" : "100000" }}}}'
 
-## Future Features
-
-* Re-doing the bot plugin for Discord / Matrix
-* Additional binary analysis features - pulling import/export tables, hashing of specific structures in the header, logging all strings etc.
-* Checking if the file is the database before adding. This feature was removed previously due to specific issues with older versions of ES.
-* Configuration options for requests such as: user agent, timeout, proxy etc.
-* Dockerization of this entire project.
-
-## Contribution
-
-PRs are welcome! If you want to give specific feedback, you can also DM me [@netspooky](https://twitter.com/netspooky) on Twitter.
+---
 
 ## Thanks
 
