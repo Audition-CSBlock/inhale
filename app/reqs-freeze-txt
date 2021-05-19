@@ -1,0 +1,10 @@
+binwalk==2.2.1+74b2a6f
+certifi==2020.12.5
+chardet==4.0.0
+elasticsearch==7.12.1
+filemagic==1.6
+idna==2.10
+r2pipe==1.5.3
+requests==2.25.1
+urllib3==1.26.4
+yara-python==4.1.0

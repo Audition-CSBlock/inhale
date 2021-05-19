@@ -78,7 +78,7 @@ banner = """░░░░░░░░░░░░░░░░░░░░░░�
 ### Database Functions #########################################################
 
 def elasticPost(fileinfo):
-    es = Elasticsearch()
+    es = Elasticsearch(['inhale_elastic'])
     es.indices.create(index='inhaled', ignore=400)
     try:
         es.index(index="inhaled", body=fileinfo)

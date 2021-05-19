@@ -1,2 +1,4 @@
 .vscode
-iModules/__pycache__
+app/iModules/__pycache__
+.DS_Store
+app/files/

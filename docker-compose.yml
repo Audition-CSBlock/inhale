@@ -1,0 +1,22 @@
+version: '3.9'
+services:
+  inhale:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: inhale
+    container_name: inhale
+    volumes:
+      - "./app/:/app/"
+    entrypoint: ["/bin/bash"]
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+  elastic:
+    image: elasticsearch:7.12.1
+    container_name: inhale_elastic
+    environment:
+      - discovery.type=single-node
+    # ports:
+    #   - "9200:9200"
+    #   - "9300:9300"
+

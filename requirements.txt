@@ -1,4 +1,5 @@
-filemagic
-elasticsearch
-r2pipe
-yara-python
+filemagic~=1.6
+elasticsearch~=7.12.1
+r2pipe~=1.5.3
+yara-python~=4.1.0
+requests~=2.25.1
