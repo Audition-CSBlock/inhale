@@ -1,6 +1,6 @@
 FROM python:3.9-slim-buster
 
-ENV YARA_VERSION=4.1.0
+ENV YARA_VERSION=4.1.1
 
 COPY requirements.txt .
 
@@ -25,7 +25,7 @@ RUN  apt update && apt install --assume-yes apt-utils \
     # Install python dependencies
     && cd / && python3 -m pip install -r requirements.txt \
     # Clean up
-    && cd / && rm -rf binwalk v${YARA_VERSION}.tar.gz v${YARA_VERSION} \
-    && apt purge --assume-yes git build-essential apt-transport-https automake make gcc apt-utils \
+    && cd / && rm -rf binwalk v${YARA_VERSION}.tar.gz v${YARA_VERSION} yara-${YARA_VERSION} requirements.txt \
+    && apt purge --assume-yes wget git build-essential apt-transport-https automake libtool make gcc curl pkg-config \
     && apt autoremove --assume-yes && apt clean
 workdir /app

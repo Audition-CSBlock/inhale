@@ -17,7 +17,7 @@ or a low cost computer like a Raspberry Pi.
 ## Install
 
 ### Docker
-The built image size is `879MB`. Moreover, the docker version of the project utilizes the [official Elasticsearch docker container](https://hub.docker.com/_/elasticsearch?tab=tags&page=1&ordering=last_updated).
+The built image size is `661MB`. Moreover, the docker version of the project utilizes the [official Elasticsearch docker container](https://hub.docker.com/_/elasticsearch?tab=tags&page=1&ordering=last_updated).
 
 Make sure you have docker and docker-compose installed:
 1. https://docs.docker.com/get-docker/
@@ -27,7 +27,7 @@ Then clone the repo or download and extract the project zip file. After that, bu
 ```shell
 $ cd inhale # CD into project directory
 $ docker-compose up -d # build (if images do not exist) and run as daemon
-$ docker attach inhale # Attach to running container to enter shell
+$ docker exec -it inhale /bin/bash # Attach to running container to enter shell
 ```
 
 And that it is, you can use the project:
