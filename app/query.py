@@ -33,7 +33,7 @@ side      = cPNK+"│"+cCYAN
 
 ### Database Functions #########################################################
 def elasticQuery(query):
-    es = Elasticsearch()
+    es = Elasticsearch(['inhale_elastic'])
     searchParams = {
         'query':{
                 'query_string':{
