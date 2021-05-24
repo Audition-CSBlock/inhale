@@ -194,6 +194,53 @@ Query for "PE" and then display the DLL imports for each of the returned query h
 
     python3.8 query.py -q PE -imports
 
+
+#### Using The query.py Script
+Query the DB for "something" and show fields "filename" and "sha1".
+
+    python3 query.py -q something -s filename,sha1
+
+You can pass as many fields as you want using the switch `-s` or `-sf` which stands for show or show fields. Just make sure that the fields you pass are comma separated.
+
+The script's help output:
+
+```
+python3 query.py -h
+usage: query.py [-h] [-q QUERY] [-sf SHOWFIELDS] [-imphash] [-imports]
+
+Query Inhale DB
+
+optional arguments:
+  -h, --help      show this help message and exit
+  -q QUERY        Search Query
+  -sf SHOWFIELDS  Show Fields. Must be comma separated. Ex: SHA1,filename,filetype,filesize
+  -imphash        Calculate ImpHash. For Windows PE files
+  -imports        Show Imported DLLs. For Windows PE files
+
+```
+
+More examples:
+
+Query for "exe" and then calculate ImpHash on the returned query hits:
+
+    python3 query.py -q exe -imphash
+
+Query for "PE" and then display the "filename" and "sha256" fields of the returned query hits:
+
+    python3 query.py -q PE -sf filename,sha256
+
+Query for "powershell" and then display the "yara" field of the returned query hits:
+
+    python3 query.py -q powershell -sf yara
+
+Query for "PE" and then display the "filename", "sha256", "url" fields and calculate the ImpHash for each of the returned query hits:
+    
+    python3 query.py -q PE -sf filename,sha256,url -imphash
+
+Query for "PE" and then display the DLL imports for each of the returned query hits:
+
+    python3.8 query.py -q PE -imports
+
 #### Using The Bash Script
 Use db.sh to query (Soon to be a nice script)
 
