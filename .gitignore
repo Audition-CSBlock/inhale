@@ -2,3 +2,4 @@
 app/iModules/__pycache__
 .DS_Store
 app/files/
+elastic_data

@@ -17,7 +17,7 @@ or a low cost computer like a Raspberry Pi.
 ## Install
 
 ### Docker
-The built image size is `879MB`. Moreover, the docker version of the project utilizes the [official Elasticsearch docker container](https://hub.docker.com/_/elasticsearch?tab=tags&page=1&ordering=last_updated).
+The built image size is `661MB`. Moreover, the docker version of the project utilizes the [official Elasticsearch docker container](https://hub.docker.com/_/elasticsearch?tab=tags&page=1&ordering=last_updated).
 
 Make sure you have docker and docker-compose installed:
 1. https://docs.docker.com/get-docker/
@@ -27,7 +27,7 @@ Then clone the repo or download and extract the project zip file. After that, bu
 ```shell
 $ cd inhale # CD into project directory
 $ docker-compose up -d # build (if images do not exist) and run as daemon
-$ docker attach inhale # Attach to running container to enter shell
+$ docker exec -it inhale /bin/bash # Attach to running container to enter shell
 ```
 
 And that it is, you can use the project:
@@ -147,6 +147,53 @@ PROTIP: Use [this](https://twitter.com/search?q=%23opendir&f=live) Twitter hasht
 You can pass your own yara rules with -y, this is a huge work in progress and almost everything in "YaraRules" is from https://github.com/kevthehermit/PasteHunter/tree/master/YaraRules. Shoutout [@KevTheHermit](https://twitter.com/kevthehermit)
 
 ### Querying the Database
+
+#### Using The query.py Script
+Query the DB for "something" and show fields "filename" and "sha1".
+
+    python3 query.py -q something -s filename,sha1
+
+You can pass as many fields as you want using the switch `-s` or `-sf` which stands for show or show fields. Just make sure that the fields you pass are comma separated.
+
+The script's help output:
+
+```
+python3 query.py -h
+usage: query.py [-h] [-q QUERY] [-sf SHOWFIELDS] [-imphash] [-imports]
+
+Query Inhale DB
+
+optional arguments:
+  -h, --help      show this help message and exit
+  -q QUERY        Search Query
+  -sf SHOWFIELDS  Show Fields. Must be comma separated. Ex: SHA1,filename,filetype,filesize
+  -imphash        Calculate ImpHash. For Windows PE files
+  -imports        Show Imported DLLs. For Windows PE files
+
+```
+
+More examples:
+
+Query for "exe" and then calculate ImpHash on the returned query hits:
+
+    python3 query.py -q exe -imphash
+
+Query for "PE" and then display the "filename" and "sha256" fields of the returned query hits:
+
+    python3 query.py -q PE -sf filename,sha256
+
+Query for "powershell" and then display the "yara" field of the returned query hits:
+
+    python3 query.py -q powershell -sf yara
+
+Query for "PE" and then display the "filename", "sha256", "url" fields and calculate the ImpHash for each of the returned query hits:
+    
+    python3 query.py -q PE -sf filename,sha256,url -imphash
+
+Query for "PE" and then display the DLL imports for each of the returned query hits:
+
+    python3.8 query.py -q PE -imports
+
 
 #### Using The query.py Script
 Query the DB for "something" and show fields "filename" and "sha1".
